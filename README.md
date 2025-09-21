@@ -1,27 +1,79 @@
 # Birthday Paradox Simulator
 
-## Overview
+## 🎯 Objective
 
-This project is a Python-based simulation of the classic "Birthday Paradox". The paradox states that in a group of people, the probability of at least two individuals sharing a birthday is much higher than one might intuitively expect.
+This project is a command-line tool that runs Monte Carlo simulations to explore the "Birthday Paradox". It can be used in two ways:
 
-This script runs Monte Carlo simulations to empirically determine the minimum number of people required in a group to have a greater than 50% probability that at least two of them share a birthday. For simplicity, the simulation assumes a non-leap year (365 days).
+1.  **Find Crossover Point**: Automatically find the minimum number of people required in a group for the probability of a shared birthday to exceed 50%.
+2.  **Calculate for Specific Group Size**: Calculate the probability of a shared birthday for a specific number of people that you provide.
 
-## How It Works
+The simulation assumes a non-leap year (365 days) for simplicity.
 
-1.  **`has_duplicate_birthday(num_people)`**: This function simulates a single "room" with `num_people`. It generates a random integer between 1 and 365 for each person. Using a `set` for efficient lookup, it checks if a duplicate birthday is generated.
-2.  **`run_simulation(num_people, num_simulations)`**: To find the probability for a given group size, this function calls `has_duplicate_birthday` thousands of times (default is 10,000) and calculates the ratio of successful outcomes (shared birthdays) to the total number of simulations.
-3.  **`find_min_people_for_50_percent()`**: This is the main driver function. It starts with a group of 2 people and iteratively increases the group size, running simulations for each size until the calculated probability exceeds 0.5 (50%).
+## 🛠️ How to Run
 
-## How to Run
+This script is run from the terminal. It's recommended to use a virtual environment.
 
-1.  Ensure you have Python 3 installed.
-2.  Clone the repository or download the `simulator.py` file.
-3.  Open your terminal and navigate to the project directory.
-4.  Run the script:
+### Prerequisites
+- Python 3
+
+### Installation
+
+1.  Clone the repository and navigate into the project directory.
+2.  Create and activate a virtual environment:
     ```bash
-    python simulator.py
+    python -m venv venv
+    source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+    ```
+3.  This project has no external dependencies, so no installation is needed. The `requirements.txt` file is intentionally empty.
+
+### Execution & Examples
+
+The script's behavior changes based on whether you provide the `--people` flag.
+
+**1. Find the 50% Crossover Point (Default Mode)**
+
+To run the original simulation that finds the minimum number of people, run the script without any arguments.
+
+```bash
+python simulator.py
+```
+**Expected Output:**
+```
+Starting Birthday Paradox Simulation...
+========================================
+Num People | Probability of Shared Birthday
+========================================
+2          | 0.0028
+...
+22         | 0.4755
+23         | 0.5071
+========================================
+
+Result: With 23 people, the probability first exceeds 50%!
+```
+
+**2. Calculate Probability for a Specific Group Size**
+
+To calculate the probability for a specific group, use the `-p` or `--people` flag.
+
+* **Example for a group of 40 people:**
+    ```bash
+    python simulator.py --people 40
+    ```
+    **Expected Output:**
+    ```
+    Calculating probability for a group of 40 people...
+    ========================================
+    Result: The probability of a shared birthday is approximately 89.12%.
     ```
 
-## Expected Output
-
-The script will print the probability for each group size until it crosses the 50% threshold, at which point it will display the final result.
+* **Example for a group of 60 people:**
+    ```bash
+    python simulator.py -p 60
+    ```
+    **Expected Output:**
+    ```
+    Calculating probability for a group of 60 people...
+    ========================================
+    Result: The probability of a shared birthday is approximately 99.41%.
+    ```
