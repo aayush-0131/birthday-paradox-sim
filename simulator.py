@@ -1,34 +1,21 @@
 import random
+import argparse # Import the library
 
 def has_duplicate_birthday(num_people):
     """
     Simulates a room with a given number of people to check for shared birthdays.
-    
-    Args:
-        num_people (int): The number of people in the room.
-        
-    Returns:
-        bool: True if a shared birthday is found, False otherwise.
     """
     birthdays = set()
     for _ in range(num_people):
-        # Generate a random day of the year (1-365, ignoring leap years for simplicity)
         birthday = random.randint(1, 365)
         if birthday in birthdays:
-            return True # Found a duplicate
+            return True
         birthdays.add(birthday)
-    return False # No duplicates found
+    return False
 
 def run_simulation(num_people, num_simulations=10000):
     """
     Runs multiple simulations to find the probability of a shared birthday.
-    
-    Args:
-        num_people (int): The number of people in each simulation.
-        num_simulations (int): The number of times to run the simulation.
-        
-    Returns:
-        float: The probability (0.0 to 1.0) of a shared birthday.
     """
     shared_birthday_count = 0
     for _ in range(num_simulations):
@@ -53,9 +40,34 @@ def find_min_people_for_50_percent():
         
         if probability > 0.5:
             print("="*40)
-            print(f"\nResult: With {num_people} people, the probability of a shared birthday first exceeds 50%!")
-            print(f"The calculated probability is approximately {probability*100:.2f}%.")
+            print(f"\nResult: With {num_people} people, the probability first exceeds 50%!")
             return
 
+def calculate_for_specific_n(num_people):
+    """
+    Calculates and prints the probability for a specific number of people.
+    """
+    print(f"Calculating probability for a group of {num_people} people...")
+    probability = run_simulation(num_people)
+    print("="*40)
+    print(f"Result: The probability of a shared birthday is approximately {probability*100:.2f}%.")
+
+
 if __name__ == "__main__":
-    find_min_people_for_50_percent()
+    parser = argparse.ArgumentParser(
+        description="Run simulations for the Birthday Paradox."
+    )
+    parser.add_argument(
+        '-p', '--people',
+        type=int,
+        help="Calculate the probability for a specific number of people."
+    )
+    
+    args = parser.parse_args()
+
+    # If the user provides the '--people' argument, run the new function.
+    # Otherwise, run the original simulation.
+    if args.people:
+        calculate_for_specific_n(args.people)
+    else:
+        find_min_people_for_50_percent()
